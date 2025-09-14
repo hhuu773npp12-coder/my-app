@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25909435487",
+    "project_id": "mesaybawi",
+    "storage_bucket": "mesaybawi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25909435487:android:4892c9c9fd282db17fcfea",
+        "android_client_info": {
+          "package_name": "com.example.mssyb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBknXGczlztyOzehW0Q0uL81MJAm4HgJN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
