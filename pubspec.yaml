@@ -12,29 +12,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
-  flutter_screenutil: ^5.9.3
+
   cupertino_icons: ^1.0.6
+  flutter_screenutil: ^5.9.3
   shared_preferences: ^2.2.3
   intl: ^0.20.2
   http: ^1.1.0
   connectivity_plus: ^7.0.0
   url_launcher: ^6.2.2
   badges: ^3.1.2 
-  
-  
-  # Firebase - نسخ متوافقة مع بعض
+
+  # Firebase (تأكد من توحيد النسخ)
   firebase_core: ^4.1.0
-  firebase_messaging: ^16.0.1
+  firebase_auth: ^6.0.2
   cloud_firestore: ^6.0.1
   firebase_database: ^12.0.1
-  firebase_auth: ^6.0.2
+  firebase_messaging: ^16.0.1
   firebase_storage: ^13.0.1
   flutter_secure_storage: ^9.0.0
+
   # الإشعارات المحلية
   flutter_local_notifications: ^19.4.2
 
-  # Location and maps
+  # Location and Maps
   geolocator: ^14.0.2
   geocoding: ^3.0.0
   google_maps_flutter: ^2.5.0
