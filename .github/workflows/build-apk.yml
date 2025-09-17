@@ -28,7 +28,7 @@ jobs:
         run: flutter build apk --release
 
       # 5. رفع الـ APK كـ Artifact
-     - name: Upload APK
+     -  name: Upload APK
   uses: actions/upload-artifact@v4
   with:
     name: app-release-apk
