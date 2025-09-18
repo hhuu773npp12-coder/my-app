@@ -23,7 +23,7 @@ android {
             keyAlias = "mesibawy"
             keyPassword = "mesibawy123"
             // استخدم مسار keystore مطلق نسبي إلى مجلد المشروع
-            storeFile = file("${project.projectDir}/app/mesibawy-release-key.keystore")
+            storeFile = file("D:/mssyb/android/app/mesibawy-release-key.keystore")
             storePassword = "mesibawy123"
         }
     }
