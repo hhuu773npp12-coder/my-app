@@ -10,26 +10,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. سحب الكود من GitHub
       - uses: actions/checkout@v3
 
+      # 2. تثبيت Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.13.4'
           channel: stable
 
+      # 3. تحديث Flutter
       - name: Upgrade Flutter
         run: flutter upgrade
 
+      # 4. تثبيت الحزم
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Flutter Doctor
-        run: flutter doctor
+      # 5. ضبط توكن Shorebird
+      - name: Set Shorebird Token
+        run: echo "SHOREBIRD_TOKEN=${{ secrets.SHOREBIRD_TOKEN }}" >> $GITHUB_ENV
 
-      - name: Build APK
-        run: flutter build apk --release
+      # 6. بناء APK باستخدام Shorebird
+      - name: Build APK via Shorebird
+        run: |
+          powershell -Command "& 'D:\shorebird-1.6.58\shorebird-1.6.58\bin\shorebird.ps1' release android"
 
+      # 7. رفع الـ APK الناتج
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
