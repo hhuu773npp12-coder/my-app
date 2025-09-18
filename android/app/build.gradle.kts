@@ -22,8 +22,8 @@ android {
         create("release") {
             keyAlias = "mesibawy"
             keyPassword = "mesibawy123"
-            // استخدم مسار نسبي صحيح
-            storeFile = file("${project.projectDir}/mesibawy-release-key.keystore")
+            // استخدم مسار keystore مطلق نسبي إلى مجلد المشروع
+            storeFile = file("${project.projectDir}/app/mesibawy-release-key.keystore")
             storePassword = "mesibawy123"
         }
     }
