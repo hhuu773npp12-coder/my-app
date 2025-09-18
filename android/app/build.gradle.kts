@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mssyb"
-        minSdk = 23                  // ← استخدم minSdk هنا
+        minSdk = 23                  // استخدم minSdk هنا
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -22,7 +22,8 @@ android {
         create("release") {
             keyAlias = "mesibawy"
             keyPassword = "mesibawy123"
-            storeFile = file("mesibawy-release-key.keystore") // تأكد أن الملف موجود هنا
+            // استخدم مسار نسبي صحيح
+            storeFile = file("${project.projectDir}/mesibawy-release-key.keystore")
             storePassword = "mesibawy123"
         }
     }
