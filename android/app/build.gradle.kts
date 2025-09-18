@@ -12,6 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mssyb"
+        minSdkVersion 23   
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
