@@ -8,12 +8,11 @@ plugins {
 android {
     namespace = "com.example.mssyb"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973" // تم تحديث NDK هنا
+    ndkVersion = "27.0.12077973" // تم تحديث NDK
 
     defaultConfig {
         applicationId = "com.example.mssyb"
-        minSdkVersion 23   
-        minSdk = flutter.minSdkVersion
+        minSdk = 23                  // ← استخدم minSdk هنا
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
