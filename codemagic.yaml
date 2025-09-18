@@ -6,7 +6,7 @@ workflows:
       flutter: "3.29.0"
       vars:
         # Shorebird API Key مشفر وآمن
-        SHOREBIRD_API_KEY: Encrypted(eyJyZWZyZXNoX3Rva2VuIjoiMS8vMDMxWFBxX0xldy1YaENnWUlBUkFBR0FNU053Ri1MOUlyNHlXZFhJLW9meUZVSGljNTVPNVlpdy1Jay0zZjRXWkFVQ19xZGhqeXltVGtiTU8xcTJ6emotTmdWUHNDb1VzV3B2dyIsImF1dGhfcHJvdmlkZXIiOiJnb29nbGUifQ==)
+        SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
     scripts:
       - name: Install dependencies
         script: |
