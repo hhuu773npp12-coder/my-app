@@ -46,21 +46,18 @@ class _EnhancedOrderSharingScreenState
     setState(() => isLoading = true);
 
     try {
-      // جلب السائقين المتاحين
       List<Map<String, dynamic>> drivers =
           await DriverSelectionService.getAvailableDrivers(
         widget.orderData['serviceType'] ?? 'delivery',
         region: selectedRegion.isEmpty ? null : selectedRegion,
       );
 
-      // إضافة إحصائيات لكل سائق
       for (var driver in drivers) {
         Map<String, dynamic> stats =
             await DriverSelectionService.getDriverStats(driver['id']);
         driver.addAll(stats);
       }
 
-      // ترتيب السائقين حسب الأولوية المحسنة
       if (widget.orderData['customerLat'] != null &&
           widget.orderData['customerLon'] != null) {
         drivers = DriverSelectionService.sortDriversByPriority(
@@ -71,9 +68,7 @@ class _EnhancedOrderSharingScreenState
           serviceType: widget.orderData['serviceType'],
         );
       } else {
-        // ترتيب بديل محسن حسب نوع الخدمة والحالة والرصيد والتقييم
         drivers.sort((a, b) {
-          // أولوية نوع الخدمة
           String targetService = widget.orderData['serviceType'] ?? '';
           bool aMatchesService = a['serviceType'] == targetService;
           bool bMatchesService = b['serviceType'] == targetService;
@@ -82,7 +77,6 @@ class _EnhancedOrderSharingScreenState
             return aMatchesService ? -1 : 1;
           }
 
-          // ثانياً: الحالة النشطة
           bool aActive = a['active'] == true && a['available'] == true;
           bool bActive = b['active'] == true && b['available'] == true;
 
@@ -90,7 +84,6 @@ class _EnhancedOrderSharingScreenState
             return aActive ? -1 : 1;
           }
 
-          // ثالثاً: الرصيد والتقييم
           double scoreA =
               (a['balance'] ?? 0) * 0.7 + (a['averageRating'] ?? 0) * 30;
           double scoreB =
@@ -200,8 +193,7 @@ class _EnhancedOrderSharingScreenState
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    initialValue:
-                        selectedRegion.isEmpty ? null : selectedRegion,
+                    value: selectedRegion.isEmpty ? null : selectedRegion,
                     decoration: const InputDecoration(
                       labelText: 'المنطقة',
                       border: OutlineInputBorder(),
