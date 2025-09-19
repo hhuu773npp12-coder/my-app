@@ -20,12 +20,12 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
-            keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("${project.projectDir}/mesibawy-release-key.keystore")
-
-            storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
-        }
+        keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
+        keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
+        storeFile = file("${project.projectDir}/mesibawy-release-key.keystore")
+        storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
+    }
+}
     }
 
     compileOptions {
