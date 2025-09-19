@@ -27,24 +27,24 @@ workflows:
 
           echo "🔍 Decoding KEYSTORE_BASE64..."
           mkdir -p android/app
-          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.keystore
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.p12
 
-          if [ ! -f android/app/mesibawy-release-key.keystore ]; then
+          if [ ! -f android/app/mesibawy-release-key.p12 ]; then
             echo "❌ ERROR: Keystore file not found after decoding!"
             exit 1
           fi
 
-          file_size=$(wc -c < android/app/mesibawy-release-key.keystore)
+          file_size=$(wc -c < android/app/mesibawy-release-key.p12)
           echo "✅ Keystore created with size: $file_size bytes"
-          
+
           # التحقق من صحة keystore
           echo "🔍 Verifying keystore..."
-          if keytool -list -keystore android/app/mesibawy-release-key.keystore -storepass mesibawy123 > /dev/null 2>&1; then
+          if keytool -list -keystore android/app/mesibawy-release-key.p12 -storetype PKCS12 -storepass $STORE_PASSWORD > /dev/null 2>&1; then
             echo "✅ Keystore verification successful"
           else
             echo "❌ ERROR: Keystore verification failed! The keystore might be corrupted."
             echo "🔧 Trying to list keystore contents for debugging..."
-            keytool -list -keystore android/app/mesibawy-release-key.keystore -storepass mesibawy123 || true
+            keytool -list -keystore android/app/mesibawy-release-key.p12 -storetype PKCS12 -storepass $STORE_PASSWORD || true
             exit 1
           fi
 
@@ -63,4 +63,3 @@ workflows:
       email:
         recipients:
           - your-email@example.com
-    
