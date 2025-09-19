@@ -9,6 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      FLUTTER_VERSION: "3.13.4"
+      KEY_ALIAS: mesibawy
+      KEY_PASSWORD: mesibawy123
+      STORE_PASSWORD: mesibawy123
+
     steps:
       # 1. سحب الكود من GitHub
       - uses: actions/checkout@v3
@@ -17,8 +23,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.4'
-          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
 
       # 3. تحديث Flutter
       - name: Upgrade Flutter
@@ -28,16 +33,19 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 5. ضبط توكن Shorebird
-      - name: Set Shorebird Token
-        run: echo "SHOREBIRD_TOKEN=${{ secrets.SHOREBIRD_TOKEN }}" >> $GITHUB_ENV
+      # 5. إنشاء مجلد android/app إذا لم يكن موجود
+      - name: Ensure android/app folder exists
+        run: mkdir -p android/app
 
-      # 6. بناء APK باستخدام Shorebird
-      - name: Build APK via Shorebird
-        run: |
-          powershell -Command "& 'D:\shorebird-1.6.58\shorebird-1.6.58\bin\shorebird.ps1' release android"
+      # 6. فك ترميز keystore من Secret ووضعه في المسار الصحيح
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/mesibawy-release-key.keystore
 
-      # 7. رفع الـ APK الناتج
+      # 7. بناء APK للإصدار
+      - name: Build APK Release
+        run: flutter build apk --release
+
+      # 8. رفع الـ APK الناتج كـ artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:

@@ -5,24 +5,53 @@ workflows:
     environment:
       flutter: "3.29.0"
       vars:
-        # Shorebird API Key مشفر وآمن
         SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
+        KEYSTORE_BASE64: $KEYSTORE_BASE64
+        KEY_ALIAS: mesibawy
+        KEY_PASSWORD: mesibawy123
+        STORE_PASSWORD: mesibawy123
     scripts:
       - name: Install dependencies
-        script: |
-          flutter pub get
+        script: flutter pub get
+
       - name: Clean project
+        script: flutter clean
+
+      # Decode keystore from environment variable
+      - name: Decode keystore
         script: |
-          flutter clean
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "❌ ERROR: KEYSTORE_BASE64 environment variable is not set!"
+            exit 1
+          fi
+          
+          mkdir -p android/app
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.keystore
+          
+          if [ -f android/app/mesibawy-release-key.keystore ]; then
+            echo "✅ Keystore decoded successfully!"
+            ls -lh android/app/mesibawy-release-key.keystore
+            # Verify keystore integrity
+            keytool -list -keystore android/app/mesibawy-release-key.keystore -storepass "$STORE_PASSWORD" -alias "$KEY_ALIAS" || {
+              echo "❌ ERROR: Keystore verification failed!"
+              exit 1
+            }
+          else
+            echo "❌ ERROR: Keystore file not found after decoding!"
+            exit 1
+          fi
+
       - name: Build AppBundle
-        script: |
-          flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
+        script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
+
       - name: Upload to Shorebird
         script: |
           shorebird login --api-key $SHOREBIRD_API_KEY
           shorebird release android --flutter-version 3.29.0
+
     artifacts:
       - build/app/outputs/bundle/release/app-release.aab
+
     publishing:
       email:
         recipients:
