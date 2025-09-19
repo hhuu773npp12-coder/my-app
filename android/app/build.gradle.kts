@@ -8,11 +8,11 @@ plugins {
 android {
     namespace = "com.example.mssyb"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973" // تم تحديث NDK
+    ndkVersion = "27.0.12077973"
 
     defaultConfig {
         applicationId = "com.example.mssyb"
-        minSdk = 23                  // استخدم minSdk هنا
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -20,11 +20,10 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = "mesibawy"
-            keyPassword = "mesibawy123"
-            // استخدم مسار keystore مطلق نسبي إلى مجلد المشروع
-            storeFile = file("${project.projectDir}/mesibawy-release-key.keystore")
-            storePassword = "mesibawy123"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
+            storeFile = file(System.getenv("KEYSTORE_PATH") ?: "android/app/mesibawy-release-key.keystore")
+            storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
         }
     }
 
