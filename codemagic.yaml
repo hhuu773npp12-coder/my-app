@@ -25,17 +25,50 @@ workflows:
             exit 1
           fi
           
+          echo "🔍 Checking KEYSTORE_BASE64 variable..."
+          echo "Variable length: ${#KEYSTORE_BASE64}"
+          echo "First 50 characters: ${KEYSTORE_BASE64:0:50}..."
+          
           mkdir -p android/app
-          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.keystore
+          
+          # Try different base64 decoding methods
+          if command -v base64 >/dev/null 2>&1; then
+            echo "📦 Using base64 command..."
+            echo "$KEYSTORE_BASE64" | base64 -d > android/app/mesibawy-release-key.keystore 2>/dev/null || \
+            echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.keystore 2>/dev/null || {
+              echo "❌ ERROR: Failed to decode base64 with base64 command"
+              exit 1
+            }
+          elif command -v openssl >/dev/null 2>&1; then
+            echo "📦 Using openssl base64..."
+            echo "$KEYSTORE_BASE64" | openssl base64 -d > android/app/mesibawy-release-key.keystore || {
+              echo "❌ ERROR: Failed to decode base64 with openssl"
+              exit 1
+            }
+          else
+            echo "❌ ERROR: No base64 decoder available"
+            exit 1
+          fi
           
           if [ -f android/app/mesibawy-release-key.keystore ]; then
-            echo "✅ Keystore decoded successfully!"
+            file_size=$(wc -c < android/app/mesibawy-release-key.keystore)
+            echo "✅ Keystore file created with size: $file_size bytes"
             ls -lh android/app/mesibawy-release-key.keystore
+            
+            if [ "$file_size" -eq 0 ]; then
+              echo "❌ ERROR: Keystore file is empty after decoding!"
+              echo "🔍 Debug: KEYSTORE_BASE64 content (first 100 chars):"
+              echo "${KEYSTORE_BASE64:0:100}"
+              exit 1
+            fi
+            
             # Verify keystore integrity
+            echo "🔐 Verifying keystore integrity..."
             keytool -list -keystore android/app/mesibawy-release-key.keystore -storepass "$STORE_PASSWORD" -alias "$KEY_ALIAS" || {
               echo "❌ ERROR: Keystore verification failed!"
               exit 1
             }
+            echo "✅ Keystore verification successful!"
           else
             echo "❌ ERROR: Keystore file not found after decoding!"
             exit 1
