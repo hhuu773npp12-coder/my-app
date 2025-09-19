@@ -63,7 +63,4 @@ workflows:
       email:
         recipients:
           - your-email@example.com
-    scripts:
-    - name: Decode keystore
-      script: |
-      echo $KEYSTORE_BASE64 | base64 --decode > android/app/mesibawy-release-key.p12
+    
