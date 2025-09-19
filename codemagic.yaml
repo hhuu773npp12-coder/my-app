@@ -36,6 +36,17 @@ workflows:
 
           file_size=$(wc -c < android/app/mesibawy-release-key.keystore)
           echo "✅ Keystore created with size: $file_size bytes"
+          
+          # التحقق من صحة keystore
+          echo "🔍 Verifying keystore..."
+          if keytool -list -keystore android/app/mesibawy-release-key.keystore -storepass mesibawy123 > /dev/null 2>&1; then
+            echo "✅ Keystore verification successful"
+          else
+            echo "❌ ERROR: Keystore verification failed! The keystore might be corrupted."
+            echo "🔧 Trying to list keystore contents for debugging..."
+            keytool -list -keystore android/app/mesibawy-release-key.keystore -storepass mesibawy123 || true
+            exit 1
+          fi
 
       - name: Build AppBundle
         script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
@@ -52,3 +63,7 @@ workflows:
       email:
         recipients:
           - your-email@example.com
+    scripts:
+    - name: Decode keystore
+      script: |
+      echo $KEYSTORE_BASE64 | base64 --decode > android/app/mesibawy-release-key.p12
