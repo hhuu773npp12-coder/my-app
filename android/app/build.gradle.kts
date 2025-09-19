@@ -20,6 +20,7 @@ android {
 
     signingConfigs {
         create("release") {
+            // قراءة المتغيرات من Codemagic Secrets، أو استخدام القيم الافتراضية
             keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
             storeFile = file("mesibawy-release-key.keystore")
