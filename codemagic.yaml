@@ -6,10 +6,6 @@ workflows:
       flutter: "3.29.0"
       vars:
         SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
-        KEYSTORE_BASE64: $KEYSTORE_BASE64
-        KEY_ALIAS: mesibawy
-        KEY_PASSWORD: mesibawy123
-        STORE_PASSWORD: mesibawy123
 
     scripts:
       - name: Install dependencies
@@ -18,38 +14,8 @@ workflows:
       - name: Clean project
         script: flutter clean
 
-      - name: Decode keystore
-        script: |
-          if [ -z "$KEYSTORE_BASE64" ]; then
-            echo "❌ ERROR: KEYSTORE_BASE64 environment variable is not set!"
-            exit 1
-          fi
-
-          echo "🔍 Decoding KEYSTORE_BASE64..."
-          mkdir -p android/app
-          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.p12
-
-          if [ ! -f android/app/mesibawy-release-key.p12 ]; then
-            echo "❌ ERROR: Keystore file not found after decoding!"
-            exit 1
-          fi
-
-          file_size=$(wc -c < android/app/mesibawy-release-key.p12)
-          echo "✅ Keystore created with size: $file_size bytes"
-
-          # التحقق من صحة keystore
-          echo "🔍 Verifying keystore..."
-          if keytool -list -keystore android/app/mesibawy-release-key.p12 -storetype PKCS12 -storepass $STORE_PASSWORD > /dev/null 2>&1; then
-            echo "✅ Keystore verification successful"
-          else
-            echo "❌ ERROR: Keystore verification failed! The keystore might be corrupted."
-            echo "🔧 Trying to list keystore contents for debugging..."
-            keytool -list -keystore android/app/mesibawy-release-key.p12 -storetype PKCS12 -storepass $STORE_PASSWORD || true
-            exit 1
-          fi
-
       - name: Build AppBundle
-        script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
+        script: flutter build appbundle --release
 
       - name: Upload to Shorebird
         script: |

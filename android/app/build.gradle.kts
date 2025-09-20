@@ -18,22 +18,6 @@ android {
         versionName = flutter.versionName
     }
 
-   signingConfigs {
-    create("release") {
-        // قراءة المتغيرات من Codemagic Secrets، أو استخدام القيم الافتراضية
-        keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
-        keyPassword = System.getenv("KEY_PASSWORD") ?: "كلمة_المرور_الجديدة_لـ_p12"
-        storeFile = file("mesibawy-release-key.p12")
-        storePassword = System.getenv("STORE_PASSWORD") ?: "كلمة_المرور_الجديدة_لـ_p12"
-        
-        // التأكد من وجود ملف keystore
-        if (!storeFile!!.exists()) {
-            logger.warn("⚠️ Keystore file not found: ${storeFile!!.absolutePath}")
-        }
-    }
-}
-
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -46,7 +30,6 @@ android {
 
     buildTypes {
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
