@@ -15,7 +15,10 @@ workflows:
         script: flutter clean
 
       - name: Build AppBundle
-        script: flutter build appbundle --release
+        script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
+
+      - name: List build output
+        script: ls -lh build/app/outputs/bundle/release/
 
       - name: Upload to Shorebird
         script: |
