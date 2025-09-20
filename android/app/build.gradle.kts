@@ -12,12 +12,17 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mssyb"
+<<<<<<< HEAD
         minSdk = flutter.minSdkVersion
+=======
+        minSdk = 23
+>>>>>>> c54de2ee16876b9f7ec47bb344efed27b9b5ab4a
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+<<<<<<< HEAD
     signingConfigs {
         create("release") {
             keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
@@ -31,6 +36,8 @@ android {
         }
     }
 
+=======
+>>>>>>> c54de2ee16876b9f7ec47bb344efed27b9b5ab4a
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -43,7 +50,10 @@ android {
 
     buildTypes {
         getByName("release") {
+<<<<<<< HEAD
             signingConfig = signingConfigs.getByName("release")
+=======
+>>>>>>> c54de2ee16876b9f7ec47bb344efed27b9b5ab4a
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
