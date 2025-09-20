@@ -22,7 +22,7 @@ android {
         create("release") {
             keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("mesibawy-release-key.keystore")
+             storeFile file("android/app/mesibawy-release-key.keystore")
             storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
 
             if (!storeFile!!.exists()) {
@@ -41,22 +41,21 @@ android {
         jvmTarget = "17"
     }
 
-    buildTypes {
-        getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
-            isShrinkResources = true
+     buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            isMinifyEnabled true
+            isShrinkResources true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-        getByName("debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
+        debug {
+            isMinifyEnabled false
+            isShrinkResources false
         }
     }
-}
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
