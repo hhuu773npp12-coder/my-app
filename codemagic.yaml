@@ -3,7 +3,6 @@ workflows:
     name: Android Release Workflow
     max_build_duration: 60
     environment:
-<<<<<<< HEAD
       flutter: "3.35.2"
       vars:
         SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
@@ -11,11 +10,6 @@ workflows:
         KEY_PASSWORD: $KEY_PASSWORD          # ضع كلمة مرور keystore في Codemagic Secrets
         STORE_PASSWORD: $STORE_PASSWORD      # ضع كلمة مرور keystore في Codemagic Secrets
         KEYSTORE_BASE64: $KEYSTORE_BASE64    # ضع محتوى keystore مشفر Base64 في Codemagic Secrets
-=======
-      flutter: "3.29.0"
-      vars:
-        SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
->>>>>>> c54de2ee16876b9f7ec47bb344efed27b9b5ab4a
 
     scripts:
       - name: Install dependencies
@@ -24,7 +18,6 @@ workflows:
       - name: Clean project
         script: flutter clean
 
-<<<<<<< HEAD
       - name: Decode keystore
         script: |
           if [ -z "$KEYSTORE_BASE64" ]; then
@@ -43,28 +36,14 @@ workflows:
           mkdir -p build_artifacts
           cp android/app/build/outputs/bundle/release/app-release.aab build_artifacts/
           echo "✅ AppBundle copied to build_artifacts/"
-=======
-      - name: Build AppBundle
-        script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
-
-      - name: List build output
-        script: ls -lh build/app/outputs/bundle/release/
->>>>>>> c54de2ee16876b9f7ec47bb344efed27b9b5ab4a
 
       - name: Upload to Shorebird
         script: |
           shorebird login --api-key $SHOREBIRD_API_KEY
-<<<<<<< HEAD
           shorebird release android --flutter-version 3.35.2
 
     artifacts:
       - build_artifacts/app-release.aab
-=======
-          shorebird release android --flutter-version 3.29.0
-
-    artifacts:
-      - build/app/outputs/bundle/release/app-release.aab
->>>>>>> c54de2ee16876b9f7ec47bb344efed27b9b5ab4a
 
     publishing:
       email:
