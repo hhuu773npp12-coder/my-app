@@ -20,7 +20,7 @@ android {
         create("release") {
             keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("mesibawy-release-key.keystore")
+            storeFile = file("mesibawy-release-key.jks")
             storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
         }
     }
