@@ -1,0 +1,51 @@
+workflows:
+  android-release:
+    name: Android Release Workflow
+    max_build_duration: 60
+    environment:
+      flutter: "3.35.2"
+      vars:
+        SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
+        KEY_ALIAS: mesibawy
+        KEY_PASSWORD: $KEY_PASSWORD          # ضع كلمة مرور keystore في Codemagic Secrets
+        STORE_PASSWORD: $STORE_PASSWORD      # ضع كلمة مرور keystore في Codemagic Secrets
+        KEYSTORE_BASE64: $KEYSTORE_BASE64    # ضع محتوى keystore مشفر Base64 في Codemagic Secrets
+
+    scripts:
+      - name: Install dependencies
+        script: flutter pub get
+
+      - name: Clean project
+        script: flutter clean
+
+      - name: Decode keystore
+        script: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "❌ KEYSTORE_BASE64 environment variable not set!"
+            exit 1
+          fi
+          mkdir -p android/app
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.p12
+          echo "✅ Keystore decoded successfully"
+
+      - name: Build AppBundle
+        script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
+
+      - name: Copy AppBundle to artifacts folder
+        script: |
+          mkdir -p build_artifacts
+          cp android/app/build/outputs/bundle/release/app-release.aab build_artifacts/
+          echo "✅ AppBundle copied to build_artifacts/"
+
+      - name: Upload to Shorebird
+        script: |
+          shorebird login --api-key $SHOREBIRD_API_KEY
+          shorebird release android --flutter-version 3.35.2
+
+    artifacts:
+      - build_artifacts/app-release.aab
+
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com

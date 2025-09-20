@@ -1,0 +1,56 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      FLUTTER_VERSION: "3.13.4"
+      KEY_ALIAS: mesibawy
+      KEY_PASSWORD: mesibawy123
+      STORE_PASSWORD: mesibawy123
+
+    steps:
+      # 1. سحب الكود من GitHub
+      - uses: actions/checkout@v3
+
+      # 2. تثبيت Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      # 3. تحديث Flutter
+      - name: Upgrade Flutter
+        run: flutter upgrade
+
+      # 4. تثبيت الحزم
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5. إنشاء مجلد android/app إذا لم يكن موجود
+      - name: Ensure android/app folder exists
+        run: mkdir -p android/app
+
+      # 6. فك ترميز keystore من Secret ووضعه في المسار الصحيح
+      - name: Decode keystore
+        run: |
+          mkdir -p android/app
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n' | base64 --decode > android/app/mesibawy-release-key.keystore
+          ls -lh android/app/mesibawy-release-key.keystore
+
+      # 7. بناء APK للإصدار
+      - name: Build APK Release
+        run: flutter build apk --release
+
+      # 8. رفع الـ APK الناتج كـ artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
