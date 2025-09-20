@@ -7,48 +7,38 @@ plugins {
 
 android {
     namespace = "com.example.mssyb"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
-
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.example.mssyb"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 23
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     signingConfigs {
         create("release") {
             keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("mesibawy-release-key.keystore")
+            storeFile = file("android/app/mesibawy-release-key.keystore")
             storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
-
-            if (!storeFile!!.exists()) {
-                logger.warn("⚠️ Keystore file not found: ${storeFile!!.absolutePath}")
-            }
         }
     }
 
     buildTypes {
-    release {
-        // ربط SigningConfig بالملف الصحيح
-        signingConfig = signingConfigs.getByName("release")
-        isMinifyEnabled = true
-        isShrinkResources = true
-        proguardFiles(
-            getDefaultProguardFile("proguard-android-optimize.txt"),
-            "proguard-rules.pro"
-        )
-    }
-
-    debug {
-        isMinifyEnabled = false
-        isShrinkResources = false
-    }
-}
-
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        getByName("debug") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
     }
 
     compileOptions {
@@ -72,6 +62,4 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
-flutter {
-    source = "../.."
-}
+// Flutter block غير مدعوم في Kotlin DSL، احذفه أو اجعله في build.gradle عادي
