@@ -22,7 +22,7 @@ android {
         create("release") {
             keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("android/app/mesibawy-release-key.keystore")
+            storeFile = file("mesibawy-release-key.keystore")
             storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
 
             if (!storeFile!!.exists()) {
@@ -32,19 +32,23 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-        getByName("debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
-        }
+    release {
+        // ربط SigningConfig بالملف الصحيح
+        signingConfig = signingConfigs.getByName("release")
+        isMinifyEnabled = true
+        isShrinkResources = true
+        proguardFiles(
+            getDefaultProguardFile("proguard-android-optimize.txt"),
+            "proguard-rules.pro"
+        )
+    }
+
+    debug {
+        isMinifyEnabled = false
+        isShrinkResources = false
+    }
+}
+
     }
 
     compileOptions {
