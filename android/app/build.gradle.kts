@@ -17,14 +17,18 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            // استخدم الملف الموجود داخل المشروع
-            storeFile = file("../my-release-key.jks")
-            storePassword = "mesibawy123"  // عدلها لكلمة المرور الحقيقية
-            keyAlias = "my-key-alias"             // عدلها بالـ alias الفعلي
-            keyPassword = "mesibawy123"    // 
+    create("release") {
+        val keystorePath = System.getenv("CM_KEYSTORE_PATH")
+        if (keystorePath != null) {
+            storeFile = file(keystorePath)
+            storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("CM_KEY_ALIAS")
+            keyPassword = System.getenv("CM_KEY_PASSWORD")
+        } else {
+            println("Keystore path not found!")
         }
     }
+}
 
     buildTypes {
         getByName("release") {
