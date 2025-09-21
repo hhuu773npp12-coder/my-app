@@ -1,4 +1,4 @@
-package com.example.mssyb
+package com.maseebawy.app
 
 import io.flutter.embedding.android.FlutterActivity
 
