@@ -5,12 +5,11 @@ workflows:
     environment:
       flutter: "3.35.2"
       vars:
-        SHOREBIRD_API_KEY: SHOREBIRD_API_KEY
-        CM_KEYSTORE_PATH: android/app/my-release-key.jks
-       # المسار إلى keystore على Codemagic
-        CM_KEYSTORE_PASSWORD: CM_KEYSTORE_PASSWORD
-        CM_KEY_ALIAS: CM_KEY_ALIAS
-        CM_KEY_PASSWORD: CM_KEY_PASSWORD
+        SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
+        CM_KEYSTORE_PATH: $CM_KEYSTORE_PATH          # المسار إلى keystore داخل workspace
+        CM_KEYSTORE_PASSWORD: $CM_KEYSTORE_PASSWORD
+        CM_KEY_ALIAS: $CM_KEY_ALIAS
+        CM_KEY_PASSWORD: $CM_KEY_PASSWORD
 
     scripts:
       - name: Install dependencies
@@ -19,8 +18,19 @@ workflows:
       - name: Clean project
         script: flutter clean
 
+      - name: Decode keystore (optional)
+        script: |
+          if [ ! -f "$CM_KEYSTORE_PATH" ]; then
+            echo "❌ Keystore file not found at $CM_KEYSTORE_PATH"
+            exit 1
+          fi
+          echo "✅ Keystore file exists at $CM_KEYSTORE_PATH"
+
       - name: Build AppBundle
-        script: flutter build appbundle --release --target-platform=android-arm,android-arm64,android-x64
+        script: |
+          flutter build appbundle \
+            --release \
+            --target-platform=android-arm,android-arm64,android-x64
 
       - name: Copy AppBundle to artifacts folder
         script: |
