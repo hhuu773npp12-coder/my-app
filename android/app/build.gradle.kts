@@ -6,10 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mssyb"  // تم التعديل هنا
+    namespace = "com.example.mssyb"
     compileSdk = 36
+
     defaultConfig {
-        applicationId = "com.example.mssyb"  // تم التعديل هنا
+        applicationId = "com.example.mssyb"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
@@ -17,23 +18,21 @@ android {
     }
 
     signingConfigs {
-    create("release") {
-        val keystorePath = System.getenv("CM_KEYSTORE_PATH")
-        if (keystorePath != null && keystorePath.isNotEmpty()) {
-           storeFile = file(keystorePath)  // هذا الآن سيشير للملف داخل workspace
-           storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
-           keyAlias = System.getenv("CM_KEY_ALIAS")
-           keyPassword = System.getenv("CM_KEY_PASSWORD")
-        } else {
+        create("release") {
+            val keystorePath = System.getenv("CM_KEYSTORE_PATH")
+            if (!keystorePath.isNullOrEmpty()) {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("CM_KEY_ALIAS")
+                keyPassword = System.getenv("CM_KEY_PASSWORD")
+            } else {
                 println("Keystore path not found!")
-                }
-
+            }
         }
     }
-}
 
     buildTypes {
-        getByName("release") {
+        named("release") {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
@@ -42,7 +41,8 @@ android {
                 "proguard-rules.pro"
             )
         }
-        getByName("debug") {
+
+        named("debug") {
             isMinifyEnabled = false
             isShrinkResources = false
         }
@@ -57,7 +57,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
+}
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
@@ -68,5 +68,3 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
-
-// Flutter block غير مدعوم في Kotlin DSL، احذفه أو اجعله في build.gradle عادي
