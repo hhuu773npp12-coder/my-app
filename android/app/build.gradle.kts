@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "com.maseebawy.app"  // تم التعديل هنا
+    namespace = "com.example.mssyb"  // تم التعديل هنا
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.maseebawy.app"  // تم التعديل هنا
+        applicationId = "com.example.mssyb"  // تم التعديل هنا
         minSdk = 23
         targetSdk = 36
         versionCode = 1
