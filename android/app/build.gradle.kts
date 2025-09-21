@@ -16,25 +16,30 @@ android {
         versionName = "1.0.0"
     }
 
-    signingConfigs {
+     signingConfigs {
         create("release") {
-            keyAlias = System.getenv("KEY_ALIAS") ?: "my-key-alias"
-            keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("../my-release-key.jks") 
-            storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
+            storeFile = file(System.getenv("CM_KEYSTORE_PATH"))
+            storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("CM_KEY_ALIAS")
+            keyPassword = System.getenv("CM_KEY_PASSWORD")
         }
-    }
+     }
 
     buildTypes {
         getByName("release") {
+            // ربط التوقيع مع release
             signingConfig = signingConfigs.getByName("release")
+
+            // تفعيل الضغط والتقليل
             isMinifyEnabled = true
             isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+
         getByName("debug") {
             isMinifyEnabled = false
             isShrinkResources = false
