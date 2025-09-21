@@ -19,13 +19,15 @@ android {
     signingConfigs {
     create("release") {
         val keystorePath = System.getenv("CM_KEYSTORE_PATH")
-        if (keystorePath != null) {
-            storeFile = file(keystorePath)
-            storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("CM_KEY_ALIAS")
-            keyPassword = System.getenv("CM_KEY_PASSWORD")
+        if (keystorePath != null && keystorePath.isNotEmpty()) {
+           storeFile = file(keystorePath)  // هذا الآن سيشير للملف داخل workspace
+           storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+           keyAlias = System.getenv("CM_KEY_ALIAS")
+           keyPassword = System.getenv("CM_KEY_PASSWORD")
         } else {
-            println("Keystore path not found!")
+                println("Keystore path not found!")
+                }
+
         }
     }
 }

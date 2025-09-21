@@ -5,11 +5,12 @@ workflows:
     environment:
       flutter: "3.35.2"
       vars:
-        SHOREBIRD_API_KEY: $SHOREBIRD_API_KEY
-        CM_KEYSTORE_PATH: $CM_KEYSTORE_PATH        # المسار إلى keystore على Codemagic
-        CM_KEYSTORE_PASSWORD: $CM_KEYSTORE_PASSWORD
-        CM_KEY_ALIAS: $CM_KEY_ALIAS
-        CM_KEY_PASSWORD: $CM_KEY_PASSWORD
+        SHOREBIRD_API_KEY: SHOREBIRD_API_KEY
+        CM_KEYSTORE_PATH: android/app/my-release-key.jks
+       # المسار إلى keystore على Codemagic
+        CM_KEYSTORE_PASSWORD: CM_KEYSTORE_PASSWORD
+        CM_KEY_ALIAS: CM_KEY_ALIAS
+        CM_KEY_PASSWORD: CM_KEY_PASSWORD
 
     scripts:
       - name: Install dependencies
