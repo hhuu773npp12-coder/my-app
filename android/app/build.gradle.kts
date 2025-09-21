@@ -57,7 +57,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-}
+
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
