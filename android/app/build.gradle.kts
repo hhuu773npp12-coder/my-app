@@ -18,9 +18,9 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = System.getenv("KEY_ALIAS") ?: "mesibawy"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "my-key-alias"
             keyPassword = System.getenv("KEY_PASSWORD") ?: "mesibawy123"
-            storeFile = file("mesibawy-release-key.jks")
+            storeFile file("D:/mssyb/my-release-key.jks") 
             storePassword = System.getenv("STORE_PASSWORD") ?: "mesibawy123"
         }
     }

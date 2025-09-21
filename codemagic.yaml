@@ -25,7 +25,7 @@ workflows:
             exit 1
           fi
           mkdir -p android/app
-          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/mesibawy-release-key.jks
+          echo "$KEYSTORE_BASE64" | base64 --decode > D:/mssyb/my-release-key.jks
           echo "✅ Keystore decoded successfully"
 
       - name: Build AppBundle
